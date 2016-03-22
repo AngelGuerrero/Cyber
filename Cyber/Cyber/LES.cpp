@@ -70,7 +70,7 @@ int  LES::getTotalElementos()
 	Nodo *Iterador = ptr_PrimerElemento;
 	int total;										// Suma el total de elementos
 
-	for (total = 0; Iterador->NodoSiguiente != nullptr; total++)
+	for (total = 0; Iterador != nullptr; total++)
 	{
 		Iterador = Iterador->NodoSiguiente;
 	}
