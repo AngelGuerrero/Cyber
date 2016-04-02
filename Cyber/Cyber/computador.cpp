@@ -5,15 +5,16 @@
 computador::computador()
 {
 	this->id = 0;
-	this->curp = "";
+	this->nombreUsuario = "";
 	this->horaInicio = "";
 	this->horaFinal = "";
+	
 }
 // Crear objeto pasando los parámetros
-computador::computador(int id, std::string curp, std::string horaInicio, std::string horaFinal)
+computador::computador(int id, std::string nombreUsuario, std::string horaInicio, std::string horaFinal)
 {
 	this->id = id;
-	this->curp = curp;
+	this->nombreUsuario = nombreUsuario;
 	this->horaInicio = horaInicio;
 	this->horaFinal = horaFinal;
 }
@@ -27,9 +28,9 @@ int computador::getId()
 	return this->id;
 }
 
-std::string computador::getCurp()
+std::string computador::getnombreUsuario()
 {
-	return this->curp;
+	return this->nombreUsuario;
 }
 
 std::string computador::getHoraInicio()
@@ -48,9 +49,9 @@ void computador::setId(int id)
 	this->id = id;
 }
 
-void computador::setCurp(std::string curp)
+void computador::setnombreUsuario(std::string nombreUsuario)
 {
-	this->curp = curp;
+	this->nombreUsuario = nombreUsuario;
 }
 
 void computador::setHoraInicio(std::string horaInicio)

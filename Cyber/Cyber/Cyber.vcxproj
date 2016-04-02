@@ -146,6 +146,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="computador.cpp" />
+    <ClCompile Include="LES.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Nodo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="computador.h" />
+    <ClInclude Include="funciones.h" />
+    <ClInclude Include="LES.h" />
+    <ClInclude Include="Nodo.h" />
+    <ClInclude Include="rlutil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

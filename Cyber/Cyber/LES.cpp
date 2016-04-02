@@ -37,19 +37,20 @@ void LES::AgregarElemento(computador objeto)
 // Funciones de acceso ---
 
 // Retorna los elementos de la lista en un arreglo
-void LES::getElementos()
+void LES::getElementos(computador copiaElementos[])
 {
-	computador arreglo[20];
 	if (esta_vacio())
 	{
-		cout << "La lista está vacía" << endl;
+		std::cout << "\nLa lista está vacía" << std::endl;
 	}
 	else
 	{
 		Nodo *Iterador = ptr_PrimerElemento;
-		for (int i = 1; Iterador != nullptr; i++)
+		for (int i = 0; Iterador != nullptr; i++)
 		{
-			cout << "Identificador: " << Iterador->Computador.getId() << endl;
+			copiaElementos[i].setId(Iterador->Computador.getId());
+			copiaElementos[i].setnombreUsuario(Iterador->Computador.getnombreUsuario());
+			//std::cout << "\nIdentificador: " << Iterador->Computador.getId() << " nombreUsuario: " << Iterador->Computador.getnombreUsuario() << std::endl;
 			Iterador = Iterador->NodoSiguiente;
 		}
 		delete(Iterador);

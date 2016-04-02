@@ -11,75 +11,12 @@
 #include <ctime>
 #include <string>
 #include <random>
-#include <stdio.h>
 #include <iostream>
 #include <Windows.h>
-using namespace std;
 
-// Clases incluídas
-#include "LES.h"
+/* Las declaraciones prototipo y las definiciones están en el documento "funciones.h" */
+#include "funciones.h"
 
-
-// Cabeceras no estándar
-#include "rlutil.h"
-
-//		-------Definiciones ---
-#define MAX_SIZE	20		// Número total de máquinas disponibles
-#define MAX_LENGTH	256		// Número máximo de caracteres
-//		-------Pantalla---
-#define ESPANOL				std::locale::global(std::locale("spanish"))		// Muestra los acentos en los strings
-#define ESPERAR				system("pause")
-#define	JUSTIFICADO			gotoxy((2),(trows() / 8))
-#define CENTRAR				rlutil::locate((rlutil::tcols() / 4), rlutil::trows() / 2)
-#define ESPERAR_TIEMPO		rlutil::msleep(2500)
-#define OCULTAR_CURSOR		rlutil::hidecursor()
-#define MOSTRAR_CURSOR		rlutil::showcursor()
-#define LIMPIAR_PANTALLA	system("cls")
-#define POSICION_NORMAL		rlutil::locate(0, 0);
-//		-------Colores---
-#define CYAN				rlutil::setColor(rlutil::CYAN);
-#define ROJO				rlutil::setColor(4)
-#define VERDE				rlutil::setColor(2)
-#define BLANCO				rlutil::setColor(15)
-#define MAGENTA				rlutil::setColor(5)
-#define AZULADO				rlutil::setColor(11)
-#define AMARILLO			rlutil::setColor(14)
-//		-----DEFINICIONES DEL TECLADO---
-#define T_CERO				48
-#define	T_UNO				49
-#define T_DOS				50
-#define T_TRES				51
-#define	T_CUATRO			52
-#define T_CINCO				53
-#define T_SEIS				54
-#define T_SIETE				55
-#define T_OCHO				56
-#define T_NUEVE				57
-#define TABULADOR			9
-#define DIRECCION_IZQUIERDA	16
-#define H					104
-#define M					109
-//		----Para el sistema---
-#define EXIT_SUCCESS		 0
-
-
-
-
-// Variables globales
-computador	Computadoras[MAX_SIZE];
-LES			ListaElementos;
-
-
-// Funciones prototipos
-
-//	--menu principal--
-void menu();
-//	--Primera opción--
-void agregarUsuario();
-
-// --Funciones adicionales--
-void puntitos(string mensaje, int cantidad, int tiempo);		
-//---------------------------
 
 // Función principal
 int main()
@@ -92,6 +29,7 @@ int main()
 // Cuerpo de las funciones prototipo
 void menu()
 {
+		
 	ESPANOL;
 	LIMPIAR_PANTALLA;
 	OCULTAR_CURSOR;
@@ -126,12 +64,7 @@ void menu()
 	case T_TRES:			  break;
 
 	case T_CUATRO:
-		LIMPIAR_PANTALLA;
-		CENTRAR;
-		puntitos("Mostrar usuarios", 5, 200);
-		ListaElementos.getElementos(); 
-		ESPERAR;
-		menu();
+		mostrarUsuarios();
 		break;
 
 	case T_CINCO:break;
@@ -152,36 +85,37 @@ void menu()
 }
 void agregarUsuario()
 {
+		
+	// variables locales
+	char nombreUsuario[MAX_LENGTH] = { '\0' };
+	
 	// Función para los números aleatorios
 	srand(time(0));
 
 	// Título de la pantalla
 	LIMPIAR_PANTALLA;
 	VERDE;
-	cout << "\t\t\t\t Ingresar Curp" << endl;
+	std::cout << "\t\t\t\t Ingresar Usuario" << std::endl;
 	BLANCO;
 
 	// En esta función primero verifica que el total de máquinas posibles no se rebase, que no pase de 19, contando el cero
-	if (ListaElementos.getTotalElementos() > MAX_SIZE)
+	if (ListaElementos.getTotalElementos() >= MAX_SIZE)
 	{
-		cout << "Ya no hay máquinas disponibles" << endl;
+		std::cout << "Ya no hay máquinas disponibles" << std::endl;
 	}
 	else
 	{
-		string curp;
-		int i = 0;
-
 		// Pide los datos al usuario
-		cout << "\n\nIngresa tu curp: ";
-		cin >> curp;
-		cout << "\nTu curp es: " << curp << endl;
+		std::cout << "\n\nIngresa tu nombre de usuario: ";
+		std::cin.getline(nombreUsuario, MAX_LENGTH);
+		std::cout << "\nTu nombre de usuario es: " << nombreUsuario << std::endl;
 
 		// Manda una confirmación de continuar al usuario
-		cout << "\n\nDeseas continuar [s / n]:";
+		std::cout << "\n\nDeseas continuar [s / n]:";
 		CYAN;
 		OCULTAR_CURSOR;
 		rlutil::locate(1, rlutil::trows() - 2);
-		cout << "<=[TECLA IZQUIERDA]" << endl;
+		std::cout << "<=[TECLA IZQUIERDA]" << std::endl;
 		for (;;)
 		{
 			if (kbhit())
@@ -206,7 +140,7 @@ void agregarUsuario()
 
 					// Modifica los datos de los objetos 
 					Computadoras[numeroAleatorio].setId(numeroAleatorio);
-					Computadoras[numeroAleatorio].setCurp(curp);
+					Computadoras[numeroAleatorio].setnombreUsuario(nombreUsuario);
 
 					// Agrega el objeto a la lista
 					ListaElementos.AgregarElemento(Computadoras[numeroAleatorio]);
@@ -217,13 +151,41 @@ void agregarUsuario()
 		}
 	}
 }
+void mostrarUsuarios()
+{
+	/* Crea un nuevo array de elementos, llamado copiaElementos, en este contendrá los elementos que están en la lista
+		esto con la finalidad de separar en las listas la funcionalidad del programa, y en éste ámbito el diseño */
+	
+	/* Locales */
+	computador copiaElementos[MAX_SIZE];
+	
+	LIMPIAR_PANTALLA;
+	CENTRAR;
+	puntitos("Mostrar usuarios", 5, 200);		/* Muestra un mensaje en pantalla simplemente */
+	LIMPIAR_PANTALLA;
+	printf("\t\t\tUsuarios registrados\n\n");
+	
+	
+	ListaElementos.getElementos(copiaElementos);
+	for (int i = 0; i < (int)sizeof(copiaElementos) / (int)sizeof(copiaElementos[0]); i++)
+	{
+		if (copiaElementos[i].getId() != 0)
+		{
+			std::cout << "[" << i+1 << "]" << " | \tid: " << copiaElementos[i].getId() << "\t| Nombre de usuario: " << copiaElementos[i].getnombreUsuario() << std::endl;
+		}
+	}
+	CYAN;
+	rlutil::locate(1, rlutil::trows() - 2);
+	ESPERAR;
+	menu();
+}
 
 
 // Cuerpos de funciones adicionales
-void puntitos(string mensaje, int cantidad, int tiempo)
+void puntitos(std::string mensaje, int cantidad, int tiempo)
 {
 	VERDE;
-	cout << mensaje;
+	std::cout << mensaje;
 	for (int i = 0; i < cantidad; i++)
 	{
 		printf(".");
